@@ -41,8 +41,8 @@ window.addEventListener('keydown', e => {
 /* ---------- PRESS ANY KEY 깜빡임 ---------- */
 // 마우스가 records/save 밖에서 움직일 때만 깜빡임
 document.addEventListener('pointermove', e => {
-  const onBtn = e.target.closest && e.target.closest('.btn');
-  pressText.classList.toggle('blink', !onBtn && !isModalOpen());
+  const onSprite = e.target.closest && e.target.closest('.sprite'); // 버튼 2개 + 중앙 START GAME
+  pressText.classList.toggle('blink', !onSprite && !isModalOpen());
 });
 document.addEventListener('pointerleave', () => pressText.classList.remove('blink'));
 
@@ -68,8 +68,9 @@ const hitsObstacle = (x, y, rad) => obstacles.find(o =>
 
 function spawn() {
   viruses.length = 0;
-  for (let i = 0; i < 14; i++) {
-    const rad = (0.018 + Math.random() * 0.02) * W;
+  const count = Math.round(Math.min(32, Math.max(10, W * H / 70000))); // 화면이 클수록 많이
+  for (let i = 0; i < count; i++) {
+    const rad = (0.018 + Math.random() * 0.02) * Math.min(W, H * 1.78);
     let x, y, tries = 0;
     do { x = rad + Math.random() * (W - 2 * rad); y = rad + Math.random() * (H - 2 * rad); }
     while (hitsObstacle(x, y, rad) && ++tries < 100);
@@ -99,7 +100,7 @@ function drawVirus(v) {
 
 function step() {
   ctx.clearRect(0, 0, W, H);
-  const m = 0.03 * W; // 테두리 안쪽 여백
+  const m = 14; // 테두리 안쪽 여백
   for (const v of viruses) {
     v.x += v.vx; v.y += v.vy; v.rot += v.vr;
     const r = v.rad * 1.3;

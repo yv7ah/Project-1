@@ -9,11 +9,12 @@
 html, body { height: 100%; background: var(--bg); overflow: hidden; }
 body { display: grid; place-items: center; font-family: var(--font); }
 
-/* 1376 x 768 비율 유지하며 화면에 맞춤 */
+/* 화면 전체에 맞춰 늘림 (--u: 버튼·로고 크기 배율, 원본 1376x768 기준) */
 .stage {
+  --u: min(calc(100vw / 1376), calc(100vh / 768));
   position: relative;
-  width: min(100vw, calc(100vh * 1376 / 768));
-  aspect-ratio: 1376 / 768;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   background:
     radial-gradient(circle at 50% 50%, #2a0509 0%, #120204 55%, #060102 100%);
@@ -26,7 +27,7 @@ body { display: grid; place-items: center; font-family: var(--font); }
   mask-image: radial-gradient(circle, #000 20%, transparent 75%);
 }
 .stage::after { /* 바깥 테두리 */
-  content: ""; position: absolute; inset: 1.2%;
+  content: ""; position: absolute; inset: 6px;
   border: 1px solid #5a1418; pointer-events: none;
 }
 #virus-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -38,11 +39,14 @@ body { display: grid; place-items: center; font-family: var(--font); }
   mix-blend-mode: screen; cursor: pointer;
   transition: filter .08s, transform .08s;
 }
-.start   { left: 20.35%; top: 19.53%; width: 59.59%; height: 57.55%;
+.start   { left: 50%; top: 48.3%; transform: translate(-50%, -50%);
+           width: calc(820 * var(--u)); height: calc(442 * var(--u));
            background-image: url("images/start.png"); }
-.records { left: 2.03%;  top: 83.33%; width: 25.73%; height: 12.76%;
+.records { left: calc(28 * var(--u)); bottom: calc(30 * var(--u));
+           width: calc(354 * var(--u)); height: calc(98 * var(--u));
            background-image: url("images/records.png"); }
-.save    { left: 72.67%; top: 83.33%; width: 25.58%; height: 12.76%;
+.save    { right: calc(24 * var(--u)); bottom: calc(30 * var(--u));
+           width: calc(352 * var(--u)); height: calc(98 * var(--u));
            background-image: url("images/save.png"); }
 
 /* 버튼 눌림 효과: hover 시 어두워지고 살짝 내려감 */
@@ -51,9 +55,9 @@ body { display: grid; place-items: center; font-family: var(--font); }
 
 /* PRESS ANY KEY TO START */
 .press {
-  position: absolute; left: 50%; top: 89.6%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(10px, 1.9vw, 26px); letter-spacing: .08em;
+  position: absolute; left: 50%; bottom: calc(80 * var(--u));
+  transform: translate(-50%, 50%);
+  font-size: max(10px, calc(27 * var(--u))); letter-spacing: .08em;
   color: rgba(255, 233, 220, .55); text-shadow: 0 0 8px rgba(255, 90, 90, .5);
   pointer-events: none; white-space: nowrap;
 }
